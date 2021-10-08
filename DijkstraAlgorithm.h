@@ -19,9 +19,9 @@ private:
 	//построение маршрута на основе полученного списка в методе поиска маршрута
 	void DijkstraAlgoritmBuildTrack(List, int);
 	//Поиск маршрута, алгоритмически выглядит как составление списка вершин и установки минимальных тактов из запрашивааемой вершины
-	void DijkstraAlgoritmSearchTrack(Scan&, int, int);
+	void DijkstraAlgoritmSearchTrack(TactCalculation&, int, int);
 public:
-	void SearchTrack(Scan& scan, int begin, int end) { return DijkstraAlgoritmSearchTrack(scan, begin, end); };
+	void SearchTrack(TactCalculation& scan, int begin, int end) { return DijkstraAlgoritmSearchTrack(scan, begin, end); };
 	void PushTrack(int num) { track.track.push_back(num); };
 	void SetBeginTrack(int num) { track.begin = num; };
 	void SetEndTrack(int num) { track.end = num; };

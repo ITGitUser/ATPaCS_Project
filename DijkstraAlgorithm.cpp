@@ -26,9 +26,9 @@ void DijkstraAlgoritm::DijkstraAlgoritmBuildTrack(List list, int num) {
 	PushTrack(num);
 }
 //установка меток смежным вершинам
-List SetLabelWeightInStepByEdge(Scan& scan, List& currentList, int numRoot) {
+List SetLabelWeightInStepByEdge(TactCalculation& tactCalculation, List& currentList, int numRoot) {
 	//проверяем что вершина существует и не отрицательна
-	if (scan.CheckRootByNum(numRoot)&&numRoot >= 0)
+	if (tactCalculation.CheckRootByNum(numRoot)&&numRoot >= 0)
 	{
 	//проверяем выбранную вершину посещалась она или нет
 	if (!currentList.GetLabelVisited(numRoot))
@@ -36,41 +36,39 @@ List SetLabelWeightInStepByEdge(Scan& scan, List& currentList, int numRoot) {
 		//устанавливаем флаг посещения
 		currentList.SetLabelVisited(numRoot, true);
 		//
-		for (int i = 0; i < scan.GetRootByNum(numRoot).GetVectorEdge().size(); i++)
+		for (int i = 0; i < tactCalculation.GetRootByNum(numRoot).GetVectorEdge().size(); i++)
 		{
 			//проверяем смежную вершину, посещалась она или нет
-			if (!currentList.GetLabelVisited(scan.GetRootByNum(numRoot).GetEdgeApex(i).GetNumApex())) {
+			if (!currentList.GetLabelVisited(tactCalculation.GetRootByNum(numRoot).GetEdgeApex(i).GetNumApex())) {
 				//считаем метку веса
 				
-				int minTact = scan.GetRootByNum(numRoot).GetEdgeApex(i).GetMinTact() + currentList.GetMinTact(numRoot);
+				int minTact = tactCalculation.GetRootByNum(numRoot).GetEdgeApex(i).GetMinTact() + currentList.GetMinTact(numRoot);
 					//сравниваем посчитаный вес с текущим весом смежного root
-				if (minTact <= currentList.GetMinTact(scan.GetRootByNum(numRoot).GetEdgeApex(i).GetNumApex())) {
+				if (minTact <= currentList.GetMinTact(tactCalculation.GetRootByNum(numRoot).GetEdgeApex(i).GetNumApex())) {
 					//устанавливаем новый вес, если новый вес меньше текущего
-					currentList.SetMinTact(scan.GetRootByNum(numRoot).GetEdgeApex(i).GetNumApex(), minTact);
-					currentList.SetEdge(scan.GetRootByNum(numRoot).GetEdgeApex(i).GetNumApex(), numRoot);
-					//currentList.ChangeNode(scan.GetRootByNum(numRoot).GetEdgeApex(i).GetNumApex(), minTact, numRoot);
+					currentList.SetMinTact(tactCalculation.GetRootByNum(numRoot).GetEdgeApex(i).GetNumApex(), minTact);
+					currentList.SetEdge(tactCalculation.GetRootByNum(numRoot).GetEdgeApex(i).GetNumApex(), numRoot);
 				}
 			}
 		}
 		//рекурсивно вызываем эту же функцию
 		
-			SetLabelWeightInStepByEdge(scan, currentList, currentList.GetNumEdgeApexWithMinTactAndNotVisited(scan, numRoot));
-			//SetLabelWeightInStepByEdge(scan, currentList, scan.GetNumEdgeApexWithMinTactAndNotVisited(numRoot, currentList));
+			SetLabelWeightInStepByEdge(tactCalculation, currentList, currentList.GetNumEdgeApexWithMinTactAndNotVisited(tactCalculation, numRoot));
 		}
 		
 	}
 	return currentList;
 }
 //Поиск маршрута, алгоритмически выглядит как составление списка вершин и установки минимальных тактов из запрашивааемой вершины
-void DijkstraAlgoritm::DijkstraAlgoritmSearchTrack(Scan& scan, int begin, int end) {
+void DijkstraAlgoritm::DijkstraAlgoritmSearchTrack(TactCalculation& tactCalculation, int begin, int end) {
 	//проверка существования запрашиваемых вершин
-	if (scan.CheckRootByNum(begin)&&scan.CheckRootByNum(end))
+	if (tactCalculation.CheckRootByNum(begin)&& tactCalculation.CheckRootByNum(end))
 	{
 		//создаем список для хранения информации о возможных маршрутах(трэках)
 		List currentList;
-		for (int i = 0; i < scan.GetSizeScan(); i++)
+		for (int i = 0; i < tactCalculation.GetSizeScan(); i++)
 		{
-			currentList.PushNode(scan.GetRootByIndex(i).GetNumRoot());
+			currentList.PushNode(tactCalculation.GetRootByIndex(i).GetNumRoot());
 		}
 		//создаем контейнер для целевого маршрута
 		/////////////////////////////////////////
@@ -81,7 +79,7 @@ void DijkstraAlgoritm::DijkstraAlgoritmSearchTrack(Scan& scan, int begin, int en
 		//устанавливаем метку начальной вершине равную 0
 		currentList.SetMinTact(begin,0);
 		currentList.SetEdge(begin, begin);
-		SetLabelWeightInStepByEdge(scan, currentList, begin);
+		SetLabelWeightInStepByEdge(tactCalculation, currentList, begin);
 		currentList.PrintList();
 		//SetTactTrack(scan.GetRootByNum(end).GetLabelWeight());
 		BuildTrack(currentList, end);
@@ -89,12 +87,12 @@ void DijkstraAlgoritm::DijkstraAlgoritmSearchTrack(Scan& scan, int begin, int en
 		Print();
 	}
 	else {
-		if (!scan.CheckRootByNum(begin))
+		if (!tactCalculation.CheckRootByNum(begin))
 		{
 			//ERROR-Начальная вершина не существует в текущей развертке
 			cout << "Начальная вершина не существует в текущей развертке" << endl;
 		}
-		else if(!scan.CheckRootByNum(end)){
+		else if(!tactCalculation.CheckRootByNum(end)){
 			//ERROR-Конечная вершина не существует в текущей развертке
 			cout << "Конечная вершина не существует в текущей развертке" << endl;
 		}

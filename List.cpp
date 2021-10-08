@@ -66,16 +66,16 @@ int List::GetIndexNode(int numNode) {
 	cout << "///////////Error-List(GetIndexNode)///////////: узел в списке не существует!" << endl;
 }
 //метод получения номера смежной вершины с наименьшим кол-вом тактов, с условием не посещенности вершины
-int List::ListGetNumEdgeApexWithMinTactAndNotVisited(Scan scan, int numApex) {
-	int sizeVectorEdge = scan.GetRootByNum(numApex).GetVectorEdge().size();
+int List::ListGetNumEdgeApexWithMinTactAndNotVisited(TactCalculation tactCalculation, int numApex) {
+	int sizeVectorEdge = tactCalculation.GetRootByNum(numApex).GetVectorEdge().size();
 	int minTact = 10000000;
 	int num = -1;
 	for (int i = 0; i < sizeVectorEdge; i++)
 	{
-		int tact = scan.GetRootByNum(numApex).GetEdgeApex(i).GetMinTact();
+		int tact = tactCalculation.GetRootByNum(numApex).GetEdgeApex(i).GetMinTact();
 
-		if (!this->GetLabelVisited(scan.GetRootByNum(numApex).GetEdgeApex(i).GetNumApex()) && minTact > tact) {
-			num = scan.GetRootByNum(scan.GetRootByNum(numApex).GetEdgeApex(i).GetNumApex()).GetNumRoot();
+		if (!this->GetLabelVisited(tactCalculation.GetRootByNum(numApex).GetEdgeApex(i).GetNumApex()) && minTact > tact) {
+			num = tactCalculation.GetRootByNum(tactCalculation.GetRootByNum(numApex).GetEdgeApex(i).GetNumApex()).GetNumRoot();
 			minTact = tact;
 		}
 	}

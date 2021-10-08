@@ -152,12 +152,14 @@
     <ClCompile Include="graphUnfoldingPathfindingAlgorithm.cpp" />
     <ClCompile Include="List.cpp" />
     <ClCompile Include="ScanGraph.cpp" />
+    <ClCompile Include="TactCalculation.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DijkstraAlgorithm.h" />
     <ClInclude Include="graph.h" />
     <ClInclude Include="list.h" />
     <ClInclude Include="scanGraph.h" />
+    <ClInclude Include="tactCalculation.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,5 +1,5 @@
 #pragma once
-#include "scanGraph.h"
+#include "tactCalculation.h"
 using namespace std;
 struct Node {
 	//номер вершины
@@ -33,7 +33,7 @@ private:
 	//метод получения индекс узла по нмеру узла
 	int GetIndexNode(int);
 	//метод получения номера смежной вершины с наименьшим кол-вом тактов, с условием не посещенности вершины
-	int ListGetNumEdgeApexWithMinTactAndNotVisited(Scan, int);
+	int ListGetNumEdgeApexWithMinTactAndNotVisited(TactCalculation, int);
 public:
 	void PushNode(int numNode) { ListPushNode(numNode); };
 	int GetMinTact(int numNode) { return ListGetMinTact(numNode); };
@@ -44,8 +44,8 @@ public:
 	void SetMinTact(int num, int tact) { ListSetMinTact(num, tact); };
 	void SetLabelVisited(int numNode, bool label) { ListChangeLabelVisited(numNode, label); };
 	int GetSize() { return list.size(); };
-	int GetNumEdgeApexWithMinTactAndNotVisited(Scan scan, int num) {
-		return ListGetNumEdgeApexWithMinTactAndNotVisited(scan, num);
+	int GetNumEdgeApexWithMinTactAndNotVisited(TactCalculation tactCalculation, int num) {
+		return ListGetNumEdgeApexWithMinTactAndNotVisited(tactCalculation, num);
 	};
 	List() { this->list; };
 

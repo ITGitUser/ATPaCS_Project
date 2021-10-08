@@ -1,3 +1,4 @@
+
 #include <iostream>
 #include "scanGraph.h"
 #include <string>
@@ -5,92 +6,86 @@
 #include <iterator>
 using namespace std;
 
-//-------EdgeApex--------//
+//-------EdgeApexScan--------//
 //метод установки номера смежной вершины
-void EdgeApex::EdgeApexSetNumApex(int number) {
+void EdgeApexScan::EdgeApexScanSetNumApex(int number) {
 	this->numApex = number;
 }
 //меод получения номера смежной вершны
-int EdgeApex::EdgeApexGetNumApex() {
+int EdgeApexScan::EdgeApexScanGetNumApex() {
 	return this->numApex;
 }
-//метод установки наименьшего кол-во такта до смежной вершны(вершины направления)
-void EdgeApex::EdgeApexSetMinTact(int tact) {
-	this->minTact = tact;
+//метод получения конкретного TactPosition по индексу в векторе tactPosition
+TactPosition EdgeApexScan::EdgeApexScanGetTactPosition(int index) {
+	return this->tactPosition[index];
 }
-//меод получения наименьшего кол-во такта до смежной вершны(вершины направления)
-int EdgeApex::EdgeApexGetMinTact() {
-	return this->minTact;
-}
-//метод получения конкретного пути типа Path по индексу в векторе path
-Path EdgeApex::EdgeApexGetPath(int index) {
-	return this->path[index];
-}
-//метод получения вектора пути типа Path
-vector<Path> EdgeApex::EdgeApexGetVectorPath() {
-	return this->path;
-}
-//метод добавления пути типа Path в вектор path
-void EdgeApex::EdgeApexPushPathInVector(Path path) {
-	this->path.push_back(path);
+//метод добавления структуры типа TactPosition в вектор tactPosition
+void EdgeApexScan::EdgeApexScanPushPathInVector(TactPosition tactPosition) {
+	this->tactPosition.push_back(tactPosition);
 
 }
+//метод получения вектора тактов типа TactPosition
+vector<TactPosition> EdgeApexScan::EdgeApexScanGetVectorPath() {
+	return this->tactPosition;
+}
 //метод очистки смежной вершины
-void EdgeApex::EdgeApexClear() {
-	this->path.clear();
+void EdgeApexScan::EdgeApexScanClear() {
+	this->tactPosition.clear();
 	int numApex = -1;
 	int minTact = -1;
 }
-//---------Root--------//
-//метод установки номера вершины типа root, в аргумент передается номер вершины
-void Root::RootSetNumRoot(int number) {
+//---------RootScan--------//
+//метод установки номера вершины типа rootScan, в аргумент передается номер вершины
+void RootScan::RootScanSetNumRoot(int number) {
 	this->numApex = number;
 }
-//метод получения номера вершины типа root
-int Root::RootGetNumRoot() {
+//метод получения номера вершины типа rootScan
+int RootScan::RootScanGetNumRoot() {
 	return this->numApex;
 }
 //метод получения вектора смежных root'ов 
-vector<EdgeApex> Root::RootGetVectorEdge() {
+vector<EdgeApexScan> RootScan::RootScanGetVectorEdge() {
 	return this->Edge;
 }
-//метод полуения смежной вершины типа EdgeApex у root'а по индексу
-EdgeApex Root::RootGetEdgeApex(int index) {
+//метод получения смежной вершины типа EdgeApexScan у root'а по индексу
+EdgeApexScan RootScan::RootScanGetEdgeApex(int index) {
 	return this->Edge[index];
 }
-//метод добавления смежной вершны типа EdgeApex
-void Root::RootPush(EdgeApex edge) {
+//метод добавления смежной вершны типа EdgeApexScan
+void RootScan::RootScanPush(EdgeApexScan edge) {
 	this->Edge.push_back(edge);
 }
-//метод очистки root
-void Root::RootClear() {
+//метод очистки rootScan
+void RootScan::RootScanClear() {
 	this->Edge.clear();
 }
 //--------Scan--------//
-//метод добавления вершины типа root в Развертку
-void Scan::ScanPush(Root root) {
+//метод добавления вершины типа rootScan в Развертку
+void Scan::ScanPush(RootScan root) {
 	this->scan.push_back(root);
 }
 //вывод Развертки в консоль
-void Scan::ScanPrint(vector<Root> scan) {
+void Scan::ScanPrint(vector<RootScan> scan) {
 	cout << "__________________________" << endl;
 	cout << "Развертка:" << endl;
-	for (Root n : scan) {
+	for (RootScan n : scan) {
 		//-----Выводим номера вершин рутов-----//
 		cout << "Вершина (" << n.GetNumRoot() << ") :"; //номер вершины-root
 		for (int g = 0; g < n.GetVectorEdge().size(); g++) {
-			cout << endl << "смежность: " << n.GetEdgeApex(g).GetNumApex() << " такты: " << n.GetEdgeApex(g).GetMinTact();//номер смежной вершины и число тактов
+			cout << endl << "смежность: " << n.GetEdgeApex(g).GetNumApex();//номер смежной вершины и число тактов
 			for (int k = 0; k < n.GetEdgeApex(g).GetVectorPath().size(); k++) {//выводим позиции
-				cout << "(" << n.GetEdgeApex(g).GetPath(k).direction << " ";
+				cout << "(" << n.GetEdgeApex(g).GetPath(k).numberTrack << " ";
+				cout << n.GetEdgeApex(g).GetPath(k).direction << " ";
 				cout << n.GetEdgeApex(g).GetPath(k).position << " ";
+				cout << n.GetEdgeApex(g).GetPath(k).labelfree << " ";
 				cout << n.GetEdgeApex(g).GetPath(k).tact << ")";
 			}
 		}
 		cout << endl;
 	}
 }
-//метод получения вершины типа root по номеру вершины
-Root Scan::ScanGetRootByNum(int num) {
+//метод получения вершины типа rootScan по номеру вершины
+RootScan Scan::ScanGetRootByNum(int num) {
 	bool label = false;
 	for (int i = 0; i < this->scan.size(); i++)
 	{
@@ -104,55 +99,29 @@ Root Scan::ScanGetRootByNum(int num) {
 		cout << "///////////Error-Scan(ScanGetRootByNum)///////////: вершины с номером: " << num << " не существует! " << this->scan.size() << endl;
 	}
 }
-//метод проверки существования запрашиваемой вершины
-bool Scan::ScanCheckRootByNum(int n) {
-	bool label = false;
-	for (int i = 0; i < this->scan.size(); i++)
-	{
-		if (scan[i].GetNumRoot() == n) {
-			label = true;
-			return label;
-		}
 
-	}
-	if (!label&& n!=-1) {
-		cout <<endl<< "///////////Error-Scan(ScanCheckRootByNum)///////////: вершины с номером: " << n << " не существует! " << endl<< endl;
-		return label;
-	}
-}
 //инициализация Развертки на основе графа
-vector<Root> Scan::ScanInitialization(Graph& graph) {
-	Root currentRoot;
-	EdgeApex edgeApex;
-	Path currentPath;
-	int position = 0;
-	int tact = 0;
-	int tactTime = 60;
+vector<RootScan> Scan::ScanInitialization(Graph& graph) {
+	RootScan currentRootScan;
+	EdgeApexScan edgeApexScan;
+	TactPosition currentTactPosition;
+	int const Tact = 15;//требуемое количество тактов для развертки
 	for (int i = 0; i < graph.checkQuantityApex(); i++) {//перебираем вершины
-		currentRoot.SetNumRoot(graph.GetApexByIndex(i).numApex);//записываем номер вершины
+		currentRootScan.SetNumRoot(graph.GetApexByIndex(i).numApex);//записываем номер вершины
 		for (int k = 0; k < graph.GetApexByIndex(i).edge.size(); k++) {//перебираем смежные вершины
-			edgeApex.SetNumApex(graph.GetApexByIndex(i).edge[k]);//записываем номер смежной вершины
-			while (position!=100){
-				tact = tact + 1;
-				currentPath.direction = graph.GetApexByIndex(i).edge[k];// записываем направление
-				//формула расчета пройденного пути и приведения к виду от 0 до 100
-				position = (graph.GetApexByIndex(i).maxspeed[k] * tact * 100000) / (tactTime * graph.GetApexByIndex(i).length[k]);
-				if (position >= 100) {
-					position = 100;
-				}
-				currentPath.position = position; //записываем пройденную позицию
-				currentPath.tact = tact;// записываем такт текущий
-				edgeApex.PushPathInVector(currentPath);//записываем позицию в вектор
+			edgeApexScan.SetNumApex(graph.GetApexByIndex(i).edge[k]);//записываем номер смежной вершины
+			for (int z = 0; z < Tact; z++)
+			{
+				currentTactPosition.direction = graph.GetApexByIndex(i).edge[k];
+				currentTactPosition.tact = z;
+				edgeApexScan.PushPathInVector(currentTactPosition);//записываем позицию в вектор
 			}
-			edgeApex.SetMinTact(tact);//записываем конечный такт
-			//обнуляем флаги и счетчики и временные контейнеры
-			tact = 0;
-			position = 0;
-			currentRoot.Push(edgeApex);//записываем посчитанный путь для смежной вершины
-			edgeApex.Clear();
+			//обнуляем временные контейнеры
+			currentRootScan.Push(edgeApexScan);//записываем развертку для смежной вершины
+			edgeApexScan.Clear();
 		}
-		this->Push(currentRoot);
-		currentRoot.Clear();
+		this->Push(currentRootScan);
+		currentRootScan.Clear();
 		
 	}
 	return scan;

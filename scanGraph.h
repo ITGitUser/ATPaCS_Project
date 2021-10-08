@@ -1,96 +1,88 @@
 #pragma once
+
 #include "graph.h"
 using namespace std;
 //path-струкура позиции в зависимости от времени
 //root-корень рассматриваемых деревьев, содержит вектор путей
 //scan-развертка, совокупность рассматриваемых рутов
-struct Path {
+struct TactPosition {
+	int numberTrack = 0000;
 	int direction = 0; //направление, т.е. одна из смежных вершин, к которой считаем позицию
 	int position = 0; //от 0 до 100
 	int tact = 0;
+	bool labelfree = true;//метка свободности такта, true-использовать можно, такт свободен 
 };
-class EdgeApex {
+class EdgeApexScan {
 private:
 	//номер смежной вершины
 	int numApex = -1;
-	//наименьшее количество тактов пройденых до достижения смежной вершины
-	int minTact=-1;
-	//путь состоящий из вершины направления, позициии за такт, и номер тактов
-	vector<Path> path;
+	//развертка состоящая стрктуры типа TactPosition
+	vector<TactPosition> tactPosition;
 	//метод установки номера смежной вершины
-	void EdgeApexSetNumApex(int);
-	//меод получения номера смежной вершны
-	int EdgeApexGetNumApex();
-	//метод установки наименьшего кол-во такта до смежной вершны(вершины направления)
-	void EdgeApexSetMinTact(int);
-	//меод получения наименьшего кол-во такта до смежной вершны(вершины направления)
-	int EdgeApexGetMinTact();
-	//метод получения конкретного пути типа Path по индексу в векторе path
-	Path EdgeApexGetPath(int);
-	//метод получения вектора пути типа Path
-	vector<Path> EdgeApexGetVectorPath();
-	//метод добавления пути типа Path в вектор path
-	void EdgeApexPushPathInVector(Path);
+	void EdgeApexScanSetNumApex(int);
+	//метод получения номера смежной вершны
+	int EdgeApexScanGetNumApex();
+	//метод получения конкретного TactPosition по индексу в векторе tactPosition
+	TactPosition EdgeApexScanGetTactPosition(int);
+	//метод добавления структуры типа TactPosition в вектор tactPosition
+	void EdgeApexScanPushPathInVector(TactPosition);
+	//метод получения вектора тактов типа TactPosition
+	vector<TactPosition> EdgeApexScanGetVectorPath();
 	//метод очистки смежной вершины
-	void EdgeApexClear();
+	void EdgeApexScanClear();
 public:
-	void SetNumApex(int num) { EdgeApexSetNumApex(num); };
-	int GetNumApex() { return EdgeApexGetNumApex(); };
-	void SetMinTact(int tact) { EdgeApexSetMinTact(tact); };
-	int GetMinTact() { return EdgeApexGetMinTact(); };
-	Path GetPath(int index) { return EdgeApexGetPath(index); };
-	vector<Path> GetVectorPath() { return EdgeApexGetVectorPath(); };
-	void PushPathInVector(Path path) { EdgeApexPushPathInVector(path); };
-	void Clear() { EdgeApexClear(); };
+	void SetNumApex(int num) { EdgeApexScanSetNumApex(num); };
+	int GetNumApex() { return EdgeApexScanGetNumApex(); };
+	TactPosition GetPath(int index) { return EdgeApexScanGetTactPosition(index); };
+	void PushPathInVector(TactPosition tactPosition) { EdgeApexScanPushPathInVector(tactPosition); };
+	vector<TactPosition> GetVectorPath() { return EdgeApexScanGetVectorPath(); };
+	void Clear() { EdgeApexScanClear(); };
 };
-class Root{
+class RootScan{
 private:
 	//classSector-класс участка от 1 до 5
 	int classSector=5;
-	//номер вершины типа root
+	//номер вершины типа rootScan
 	int numApex = 0;
-	//вектор смежных вершин типа EdgeApex
-	vector<EdgeApex> Edge;
-	//метод установки номера вершины типа root, в аргумент передается номер вершины
-	void RootSetNumRoot(int);
-	//метод получения номера вершины типа root
-	int RootGetNumRoot();
+	//вектор смежных вершин типа EdgeApexScan
+	vector<EdgeApexScan> Edge;
+	//метод установки номера вершины типа rootScan, в аргумент передается номер вершины
+	void RootScanSetNumRoot(int);
+	//метод получения номера вершины типа rootScan
+	int RootScanGetNumRoot();
 	//метод получения вектора смежных root'ов 
-	vector<EdgeApex> RootGetVectorEdge();
-	//метод полуения смежной вершины типа EdgeApex у root'а по индексу
-	EdgeApex RootGetEdgeApex(int);
+	vector<EdgeApexScan> RootScanGetVectorEdge();
+	//метод получения смежной вершины типа EdgeApexScan у root'а по индексу
+	EdgeApexScan RootScanGetEdgeApex(int);
 	//метод добавления смежной вершны типа EdgeApex
-	void RootPush(EdgeApex);
-	//метод очистки root
-	void RootClear();
+	void RootScanPush(EdgeApexScan);
+	//метод очистки rootScan
+	void RootScanClear();
 public:
-	void SetNumRoot(int num) { RootSetNumRoot(num); };
-	int GetNumRoot() { return RootGetNumRoot(); };
-	vector<EdgeApex> GetVectorEdge() { return RootGetVectorEdge(); };
-	EdgeApex GetEdgeApex(int index) { return RootGetEdgeApex(index); }
-	void Push(EdgeApex edge) { RootPush(edge); };
-	void Clear() { RootClear(); };
+	void SetNumRoot(int num) { RootScanSetNumRoot(num); };
+	int GetNumRoot() { return RootScanGetNumRoot(); };
+	vector<EdgeApexScan> GetVectorEdge() { return RootScanGetVectorEdge(); };
+	EdgeApexScan GetEdgeApex(int index) { return RootScanGetEdgeApex(index); }
+	void Push(EdgeApexScan edge) { RootScanPush(edge); };
+	void Clear() { RootScanClear(); };
 };
 class Scan {
 private:
-	vector<Root> scan;
-	//метод добавления вершины типа root в Развертку
-	void ScanPush(Root);
+	vector<RootScan> scan;
+	//метод добавления вершины типа rootScan в Развертку
+	void ScanPush(RootScan);
 	//вывод Развертки в консоль
-	void ScanPrint(vector<Root>);
-	//метод получения вершины типа root по номеру вершины
-	Root ScanGetRootByNum(int);
-	//метод проверки существования запрашиваемой вершины
-	bool ScanCheckRootByNum(int);
+	void ScanPrint(vector<RootScan>);
+	//метод получения вершины типа rootScan по номеру вершины
+	RootScan ScanGetRootByNum(int);
 	//инициализация Развертки на основе графа
-	vector<Root> ScanInitialization(Graph&);
+	vector<RootScan> ScanInitialization(Graph&);
 public:
-	vector<Root> Initialization(Graph& graph) { return ScanInitialization(graph); };
-	void Push(Root root) { ScanPush(root); };
+	vector<RootScan> Initialization(Graph& graph) { return ScanInitialization(graph); };
+	void Push(RootScan root) { ScanPush(root); };
 	void Print() { ScanPrint(scan); };
-	Root GetRootByNum(int num) { return ScanGetRootByNum(num); };
-	bool CheckRootByNum(int numRoot) { return ScanCheckRootByNum(numRoot); };
-	Root GetRootByIndex(int num) { return scan[num]; };
+	RootScan GetRootByNum(int num) { return ScanGetRootByNum(num); };
+	RootScan GetRootByIndex(int num) { return scan[num]; };
 	int GetSizeScan() { return this->scan.size(); };
 	Scan() { this->scan; };
 };

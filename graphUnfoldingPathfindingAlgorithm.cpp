@@ -5,6 +5,7 @@
 #include "graph.h"
 #include "scanGraph.h"
 #include "DijkstraAlgorithm.h"
+#include "tactCalculation.h"
 #include <clocale>
 
 int main()
@@ -32,12 +33,14 @@ int main()
     //cout << mainGraph.checkQuantityApex() << endl;
     */
     mainGraph.Print();
-
     Scan scan;
     scan.Initialization(mainGraph);
     scan.Print();
+    TactCalculation tactCalculation;
+    tactCalculation.Initialization(mainGraph);
+    tactCalculation.Print();
     DijkstraAlgoritm algorithm;
-    algorithm.SearchTrack(scan, 1, 2);
+    algorithm.SearchTrack(tactCalculation, 1, 2);
     //scan.Print();
 
 }
