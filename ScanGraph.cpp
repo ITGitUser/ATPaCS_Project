@@ -16,7 +16,7 @@ int EdgeApexScan::EdgeApexScanGetNumApex() {
 	return this->numApex;
 }
 //метод получения конкретного TactPosition по индексу в векторе tactPosition
-TactPosition EdgeApexScan::EdgeApexScanGetTactPosition(int index) {
+TactPosition& EdgeApexScan::EdgeApexScanGetTactPosition(int index) {
 	return this->tactPosition[index];
 }
 //метод добавления структуры типа TactPosition в вектор tactPosition
@@ -44,7 +44,7 @@ int RootScan::RootScanGetNumRoot() {
 	return this->numApex;
 }
 //метод получения вектора смежных root'ов 
-vector<EdgeApexScan> RootScan::RootScanGetVectorEdge() {
+vector<EdgeApexScan>& RootScan::RootScanGetVectorEdge() {
 	return this->Edge;
 }
 //метод получения смежной вершины типа EdgeApexScan у root'а по индексу
@@ -74,24 +74,24 @@ void Scan::ScanPrint(vector<RootScan> scan) {
 		for (int g = 0; g < n.GetVectorEdge().size(); g++) {
 			cout << endl << "смежность: " << n.GetEdgeApex(g).GetNumApex();//номер смежной вершины и число тактов
 			for (int k = 0; k < n.GetEdgeApex(g).GetVectorPath().size(); k++) {//выводим позиции
-				cout << "(" << n.GetEdgeApex(g).GetPath(k).numberTrack << " ";
-				cout << n.GetEdgeApex(g).GetPath(k).direction << " ";
-				cout << n.GetEdgeApex(g).GetPath(k).position << " ";
-				cout << n.GetEdgeApex(g).GetPath(k).labelfree << " ";
-				cout << n.GetEdgeApex(g).GetPath(k).tact << ")";
+				cout << "(" << n.GetEdgeApex(g).GetTactPosition(k).GetNumberTrack() << " ";
+				cout << n.GetEdgeApex(g).GetTactPosition(k).GetDirection() << " ";
+				cout << n.GetEdgeApex(g).GetTactPosition(k).GetPosition() << " ";
+				cout << n.GetEdgeApex(g).GetTactPosition(k).GetLabelFree() << " ";
+				cout << n.GetEdgeApex(g).GetTactPosition(k).GetTact() << ")";
 			}
 		}
 		cout << endl;
 	}
 }
 //метод получения вершины типа rootScan по номеру вершины
-RootScan Scan::ScanGetRootByNum(int num) {
+RootScan& Scan::ScanGetRootByNum(int num) {
 	bool label = false;
 	for (int i = 0; i < this->scan.size(); i++)
 	{
 		if (scan[i].GetNumRoot() == num) {
 			label = true;
-			return scan[i];
+			return this->scan[i];
 		}
 		
 	}
@@ -105,24 +105,40 @@ vector<RootScan> Scan::ScanInitialization(Graph& graph) {
 	RootScan currentRootScan;
 	EdgeApexScan edgeApexScan;
 	TactPosition currentTactPosition;
-	int const Tact = 15;//требуемое количество тактов для развертки
 	for (int i = 0; i < graph.checkQuantityApex(); i++) {//перебираем вершины
 		currentRootScan.SetNumRoot(graph.GetApexByIndex(i).numApex);//записываем номер вершины
 		for (int k = 0; k < graph.GetApexByIndex(i).edge.size(); k++) {//перебираем смежные вершины
 			edgeApexScan.SetNumApex(graph.GetApexByIndex(i).edge[k]);//записываем номер смежной вершины
-			for (int z = 0; z < Tact; z++)
+			for (int z = 0; z < this->tact; z++)
 			{
-				currentTactPosition.direction = graph.GetApexByIndex(i).edge[k];
-				currentTactPosition.tact = z;
+				currentTactPosition.SetDirection(graph.GetApexByIndex(i).edge[k]);
+				currentTactPosition.SetTact(z);
 				edgeApexScan.PushPathInVector(currentTactPosition);//записываем позицию в вектор
 			}
-			//обнуляем временные контейнеры
 			currentRootScan.Push(edgeApexScan);//записываем развертку для смежной вершины
-			edgeApexScan.Clear();
+			edgeApexScan.Clear();//обнуляем временный контейнер
 		}
 		this->Push(currentRootScan);
-		currentRootScan.Clear();
+		currentRootScan.Clear();//обнуляем временный контейнер
 		
 	}
 	return scan;
+}
+//Установка препятствия
+void Scan::ScanSetBarrier(int tactBegin, int tactEnd, int position, int positionDirection, int type) {
+	if (tactBegin<this->ScanGetTact()&&tactBegin>=0&&tactBegin<=tactEnd)
+	{
+		for (int i = tactBegin; i <= tactEnd; i++)
+		{
+			cout << this->GetRootByNum(position).GetEdgeApex(positionDirection).GetTactPosition(i).GetLabelFree() << endl;
+			this->GetRootByNum(position).GetEdgeApex(positionDirection).GetTactPosition(i).SetLabelFree(false);
+			cout << this->GetRootByNum(position).GetEdgeApex(positionDirection).GetTactPosition(i).GetLabelFree() << endl;
+		}
+		
+			//this->GetRootByNum(position).GetEdgeApex(positionDirection).GetVectorPath().size();
+		
+	}
+	else {
+		cout << "///////////Error-Scan(ScanSetBarrier)///////////: такта или позиции не существует"<< endl;
+	}
 }

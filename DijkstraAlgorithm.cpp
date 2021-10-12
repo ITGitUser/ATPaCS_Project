@@ -81,10 +81,16 @@ void DijkstraAlgoritm::DijkstraAlgoritmSearchTrack(TactCalculation& tactCalculat
 		currentList.SetEdge(begin, begin);
 		SetLabelWeightInStepByEdge(tactCalculation, currentList, begin);
 		currentList.PrintList();
-		//SetTactTrack(scan.GetRootByNum(end).GetLabelWeight());
 		BuildTrack(currentList, end);
 		SetTactTrack(currentList.GetNodeByNum(end).minTact);
-		Print();
+		if (currentList.GetMinTact(end)>9999999)
+		{
+			cout << "///////////Error-DijkstraAlgoritm(DijkstraAlgoritmSearchTrack)///////////:ƒо назначенной вершины добратьс€ невозможно!" << endl;
+		}
+		else {
+			Print();
+		}
+		
 	}
 	else {
 		if (!tactCalculation.CheckRootByNum(begin))

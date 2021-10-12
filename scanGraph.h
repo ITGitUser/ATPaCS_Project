@@ -5,12 +5,25 @@ using namespace std;
 //path-струкура позиции в зависимости от времени
 //root-корень рассматриваемых деревьев, содержит вектор путей
 //scan-развертка, совокупность рассматриваемых рутов
-struct TactPosition {
+class TactPosition {
+private:
 	int numberTrack = 0000;
 	int direction = 0; //направление, т.е. одна из смежных вершин, к которой считаем позицию
 	int position = 0; //от 0 до 100
 	int tact = 0;
 	bool labelfree = true;//метка свободности такта, true-использовать можно, такт свободен 
+	//void TactPositionSetLabelFree(bool label) {  };
+public:
+	void SetNumberTrack(int number) { numberTrack = number; };
+	void SetDirection(int dir) { direction = dir; };
+	void SetPosition(int pos) { position = pos; };
+	void SetTact(int t) { tact = t; };
+	void SetLabelFree(bool label) { this->labelfree = label; };
+	int GetNumberTrack() { return numberTrack; };
+	int GetDirection() { return direction; };
+	int GetPosition() { return position; };
+	int GetTact() { return tact; };
+	bool GetLabelFree() { return labelfree; };
 };
 class EdgeApexScan {
 private:
@@ -23,7 +36,7 @@ private:
 	//метод получения номера смежной вершны
 	int EdgeApexScanGetNumApex();
 	//метод получения конкретного TactPosition по индексу в векторе tactPosition
-	TactPosition EdgeApexScanGetTactPosition(int);
+	TactPosition& EdgeApexScanGetTactPosition(int);
 	//метод добавления структуры типа TactPosition в вектор tactPosition
 	void EdgeApexScanPushPathInVector(TactPosition);
 	//метод получения вектора тактов типа TactPosition
@@ -33,7 +46,7 @@ private:
 public:
 	void SetNumApex(int num) { EdgeApexScanSetNumApex(num); };
 	int GetNumApex() { return EdgeApexScanGetNumApex(); };
-	TactPosition GetPath(int index) { return EdgeApexScanGetTactPosition(index); };
+	TactPosition& GetTactPosition(int index) { return this->EdgeApexScanGetTactPosition(index); };
 	void PushPathInVector(TactPosition tactPosition) { EdgeApexScanPushPathInVector(tactPosition); };
 	vector<TactPosition> GetVectorPath() { return EdgeApexScanGetVectorPath(); };
 	void Clear() { EdgeApexScanClear(); };
@@ -51,7 +64,7 @@ private:
 	//метод получения номера вершины типа rootScan
 	int RootScanGetNumRoot();
 	//метод получения вектора смежных root'ов 
-	vector<EdgeApexScan> RootScanGetVectorEdge();
+	vector<EdgeApexScan>& RootScanGetVectorEdge();
 	//метод получения смежной вершины типа EdgeApexScan у root'а по индексу
 	EdgeApexScan RootScanGetEdgeApex(int);
 	//метод добавления смежной вершны типа EdgeApex
@@ -61,28 +74,33 @@ private:
 public:
 	void SetNumRoot(int num) { RootScanSetNumRoot(num); };
 	int GetNumRoot() { return RootScanGetNumRoot(); };
-	vector<EdgeApexScan> GetVectorEdge() { return RootScanGetVectorEdge(); };
+	vector<EdgeApexScan>& GetVectorEdge() { return this->RootScanGetVectorEdge(); };
 	EdgeApexScan GetEdgeApex(int index) { return RootScanGetEdgeApex(index); }
 	void Push(EdgeApexScan edge) { RootScanPush(edge); };
 	void Clear() { RootScanClear(); };
 };
 class Scan {
 private:
+	const int tact = 15;//требуемое количество тактов для развертки
 	vector<RootScan> scan;
 	//метод добавления вершины типа rootScan в Развертку
 	void ScanPush(RootScan);
 	//вывод Развертки в консоль
 	void ScanPrint(vector<RootScan>);
 	//метод получения вершины типа rootScan по номеру вершины
-	RootScan ScanGetRootByNum(int);
+	RootScan& ScanGetRootByNum(int);
 	//инициализация Развертки на основе графа
 	vector<RootScan> ScanInitialization(Graph&);
+	//Установка препятствия	
+	void ScanSetBarrier(int, int, int, int, int);
+	int ScanGetTact() { return tact; };
 public:
 	vector<RootScan> Initialization(Graph& graph) { return ScanInitialization(graph); };
 	void Push(RootScan root) { ScanPush(root); };
 	void Print() { ScanPrint(scan); };
-	RootScan GetRootByNum(int num) { return ScanGetRootByNum(num); };
-	RootScan GetRootByIndex(int num) { return scan[num]; };
+	RootScan& GetRootByNum(int num) { return this->ScanGetRootByNum(num); };
+	RootScan& GetRootByIndex(int num) { return this->scan[num]; };
 	int GetSizeScan() { return this->scan.size(); };
+	void SetBarrier(int tactBegin, int tactEnd, int position, int positionDirection, int type) { ScanSetBarrier(tactBegin, tactEnd, position, positionDirection, type); };
 	Scan() { this->scan; };
 };
