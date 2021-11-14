@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -147,19 +147,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="DijkstraAlgorithm.cpp" />
     <ClCompile Include="Graph.cpp" />
     <ClCompile Include="graphUnfoldingPathfindingAlgorithm.cpp" />
-    <ClCompile Include="List.cpp" />
-    <ClCompile Include="ScanGraph.cpp" />
-    <ClCompile Include="TactCalculation.cpp" />
+    <ClCompile Include="NextNodeAlgorithm.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DijkstraAlgorithm.h" />
     <ClInclude Include="graph.h" />
-    <ClInclude Include="list.h" />
-    <ClInclude Include="scanGraph.h" />
-    <ClInclude Include="tactCalculation.h" />
+    <ClInclude Include="nextNodeAlgorithm.h" />
+    <ClInclude Include="timeGraph.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

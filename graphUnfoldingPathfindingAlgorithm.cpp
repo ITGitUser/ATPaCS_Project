@@ -3,15 +3,38 @@
 #include <iostream>
 #include <iterator>
 #include "graph.h"
-#include "scanGraph.h"
 #include "DijkstraAlgorithm.h"
-#include "tactCalculation.h"
+#include "timeGraph.h"
+#include "nextNodeAlgorithm.h"
 #include <clocale>
 
 int main()
 {
     setlocale(LC_CTYPE, "Russian");
-    Graph mainGraph;
+    //Graph mainGraph;
+    vector<Edge> graph;
+    graph.push_back( Edge(0, 2, 15));
+    graph.push_back(Edge(0, 1, 5));
+    graph.push_back(Edge(1, 2, 2));
+    graph.push_back(Edge(2, 1, 2));
+    graph.push_back(Edge(3, 0, 3));
+    graph[0].SetNext(vector<Edge> { graph[3]} );
+    graph[1].SetNext(vector<Edge> { graph[2]});
+    graph[2].SetNext(vector<Edge> { graph[3]});
+    graph[3].SetNext(vector<Edge> { graph[2]});
+    graph[4].SetNext(vector<Edge> { graph[0], graph[1]});
+
+    NextNodeAlgorithm alg;
+
+    DijkstraAlgoritm finder = DijkstraAlgoritm(alg);
+    GTN res = finder.SearchPath(graph[4], graph[2]);
+    while (res.GetPrev() != nullptr) {
+        cout << "(" << res.GetEdge().GetBegin() << ", " << res.GetEdge().GetEnd() << ") P:" << res.GetPlace() << " T:" << res.GetTime() << endl;
+        res = *res.GetPrev();
+    }
+
+
+
     /*
     mainGraph.Push({ 1, 2, 3 }, { 1000, 1200, 5000 }, { 60, 80, 70 });
     mainGraph.Push({ 0, 3 }, { 1000, 3000 }, { 60, 90 });
@@ -23,7 +46,7 @@ int main()
     mainGraph.Push({ 0, 3 }, { 5798, 9258 }, { 80, 90 });
     mainGraph.Push({ 1, 2 }, { 7654, 9258 }, { 90, 90 });
     
-    /**/
+    /*
     mainGraph.Push({ 4 }, { 14876 }, { 70 });
     mainGraph.Push({ 2, 3 }, { 5367, 7654 }, { 60, 90 });
     mainGraph.Push({ 1, 4 }, { 5367, 9258 }, { 80, 90 });
@@ -41,6 +64,7 @@ int main()
     tactCalculation.Print();
     DijkstraAlgoritm algorithm;
     algorithm.SearchTrack(tactCalculation, 1, 0);
+    */
 }
 
 // Запуск программы: CTRL+F5 или меню "Отладка" > "Запуск без отладки"
