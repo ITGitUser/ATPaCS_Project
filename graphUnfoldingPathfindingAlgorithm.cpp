@@ -13,25 +13,70 @@ int main()
     setlocale(LC_CTYPE, "Russian");
     //Graph mainGraph;
     vector<Edge> graph;
+    
+
+    //-------Wiki--------//
+    graph.push_back(Edge(1, 2, 2));//0
+    graph.push_back(Edge(1, 3, 3));//1
+    graph.push_back(Edge(1, 6, 4));//2
+    graph.push_back(Edge(2, 1, 2));//3
+    graph.push_back(Edge(2, 3, 1));//4
+    graph.push_back(Edge(2, 4, 5));//5
+    graph.push_back(Edge(3, 1, 3));//6
+    graph.push_back(Edge(3, 6, 2));//7
+    graph.push_back(Edge(3, 4, 3));//8
+    graph.push_back(Edge(3, 2, 1));//9
+    graph.push_back(Edge(4, 5, 5));//10
+    graph.push_back(Edge(4, 3, 3));//11
+    graph.push_back(Edge(4, 2, 5));//12
+    graph.push_back(Edge(6, 1, 4));//13
+    graph.push_back(Edge(6, 3, 2));//14
+    graph.push_back(Edge(6, 5, 3));//15
+    graph.push_back(Edge(5, 6, 3));//16
+    graph.push_back(Edge(5, 4, 2));//17
+    graph[0].SetNext(vector<Edge*> { &graph[4], &graph[5], &graph[3]});
+    graph[1].SetNext(vector<Edge*> { &graph[7], &graph[8], &graph[9], &graph[6]});
+    graph[2].SetNext(vector<Edge*> { &graph[14], &graph[15], &graph[13]});
+    graph[3].SetNext(vector<Edge*> { &graph[1], &graph[2], &graph[0]});
+    graph[4].SetNext(vector<Edge*> { &graph[7], &graph[8], &graph[9], &graph[6]});
+    graph[5].SetNext(vector<Edge*> { &graph[10], &graph[11], &graph[12]});
+    graph[6].SetNext(vector<Edge*> { &graph[0], &graph[2], &graph[1]});
+    graph[7].SetNext(vector<Edge*> { &graph[13], &graph[15], &graph[14]});
+    graph[8].SetNext(vector<Edge*> { &graph[10], &graph[12], &graph[11]});
+    graph[9].SetNext(vector<Edge*> { &graph[3], &graph[5], &graph[4]});
+    graph[10].SetNext(vector<Edge*> { &graph[16], & graph[17]});
+    graph[11].SetNext(vector<Edge*> { &graph[9], &graph[7], &graph[6], &graph[8]});
+    graph[12].SetNext(vector<Edge*> { &graph[3], &graph[4], &graph[5]});
+    graph[13].SetNext(vector<Edge*> { &graph[0], &graph[1], &graph[2]});
+    graph[14].SetNext(vector<Edge*> { &graph[6], &graph[8], &graph[9], &graph[7]});
+    graph[15].SetNext(vector<Edge*> { &graph[17], &graph[16]});
+    graph[16].SetNext(vector<Edge*> { &graph[13], &graph[14], &graph[15]});
+    graph[17].SetNext(vector<Edge*> { &graph[11], &graph[12], &graph[10]});
+    //
+
+
+    /*
     graph.push_back( Edge(0, 2, 15));
     graph.push_back(Edge(0, 1, 5));
     graph.push_back(Edge(1, 2, 2));
     graph.push_back(Edge(2, 1, 2));
     graph.push_back(Edge(3, 0, 3));
-    graph[0].SetNext(vector<Edge> { graph[3]} );
-    graph[1].SetNext(vector<Edge> { graph[2]});
-    graph[2].SetNext(vector<Edge> { graph[3]});
-    graph[3].SetNext(vector<Edge> { graph[2]});
-    graph[4].SetNext(vector<Edge> { graph[0], graph[1]});
-
+    graph[0].SetNext(vector<Edge*> { &graph[3]} );
+    graph[1].SetNext(vector<Edge*> { &graph[2]});
+    graph[2].SetNext(vector<Edge*> { &graph[3]});
+    graph[3].SetNext(vector<Edge*> { &graph[2]});
+    graph[4].SetNext(vector<Edge*> { &graph[0], &graph[1]});
+  */
     NextNodeAlgorithm alg;
 
     DijkstraAlgoritm finder = DijkstraAlgoritm(alg);
-    GTN res = finder.SearchPath(graph[4], graph[2]);
+    GTN res = finder.SearchPath(graph[6], graph[17]);
+
     while (res.GetPrev() != nullptr) {
         cout << "(" << res.GetEdge().GetBegin() << ", " << res.GetEdge().GetEnd() << ") P:" << res.GetPlace() << " T:" << res.GetTime() << endl;
         res = *res.GetPrev();
     }
+    cout << "(" << res.GetEdge().GetBegin() << ", " << res.GetEdge().GetEnd() << ") P:" << res.GetPlace() << " T:" << res.GetTime() << endl;
 
 
 
@@ -65,8 +110,48 @@ int main()
     DijkstraAlgoritm algorithm;
     algorithm.SearchTrack(tactCalculation, 1, 0);
     */
+ 
 }
-
+/*
+//-------Wiki--------//
+graph.push_back(Edge(1, 2, 2));
+graph.push_back(Edge(1, 3, 3));
+graph.push_back(Edge(1, 6, 4));
+graph.push_back(Edge(2, 1, 2));
+graph.push_back(Edge(2, 3, 1));
+graph.push_back(Edge(2, 4, 5));
+graph.push_back(Edge(3, 1, 3));
+graph.push_back(Edge(3, 6, 2));
+graph.push_back(Edge(3, 4, 3));
+graph.push_back(Edge(3, 2, 1));
+graph.push_back(Edge(4, 5, 5));
+graph.push_back(Edge(4, 3, 3));
+graph.push_back(Edge(4, 2, 5));
+graph.push_back(Edge(6, 1, 4));
+graph.push_back(Edge(6, 3, 2));
+graph.push_back(Edge(6, 5, 3));
+graph.push_back(Edge(5, 6, 3));
+graph.push_back(Edge(5, 4, 2));
+graph[0].SetNext(vector<Edge> { graph[4], graph[5]});
+graph[1].SetNext(vector<Edge> { graph[7], graph[8], graph[9]});
+graph[2].SetNext(vector<Edge> { graph[14], graph[15]});
+graph[3].SetNext(vector<Edge> { graph[1], graph[2]});
+graph[4].SetNext(vector<Edge> { graph[7], graph[8], graph[9]});
+graph[5].SetNext(vector<Edge> { graph[10], graph[11]});
+graph[6].SetNext(vector<Edge> { graph[0], graph[2]});
+graph[7].SetNext(vector<Edge> { graph[13], graph[15]});
+graph[8].SetNext(vector<Edge> { graph[10], graph[12]});
+graph[9].SetNext(vector<Edge> { graph[3], graph[5]});
+graph[10].SetNext(vector<Edge> { graph[16]});
+graph[11].SetNext(vector<Edge> { graph[9], graph[7], graph[6]});
+graph[12].SetNext(vector<Edge> { graph[3], graph[4]});
+graph[13].SetNext(vector<Edge> { graph[0], graph[1]});
+graph[14].SetNext(vector<Edge> { graph[6], graph[8], graph[9]});
+graph[15].SetNext(vector<Edge> { graph[17]});
+graph[16].SetNext(vector<Edge> { graph[13], graph[14]});
+graph[17].SetNext(vector<Edge> { graph[11], graph[12]});
+//
+*/
 // Запуск программы: CTRL+F5 или меню "Отладка" > "Запуск без отладки"
 // Отладка программы: F5 или меню "Отладка" > "Запустить отладку"
 

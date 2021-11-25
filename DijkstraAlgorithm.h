@@ -15,16 +15,18 @@ public:
 		while (!q.empty())
 		{
 			GTN *currentQueueItem = q.front();
-			q.pop();
+			
 			if (currentQueueItem->GetEdge() == end)
 			{
-				return *currentQueueItem;
+					return *currentQueueItem;
+				
+				
 			}
 			for (GTN *n: currGTN.Next(currentQueueItem))
 			{
 				q.push(n);
 			}
-			
+			q.pop();
 		}
 	};
 	DijkstraAlgoritm(NextNodeAlgorithm node) { this->currGTN = node; };

@@ -17,7 +17,7 @@ vector<GTN*> NextNodeAlgorithm::Next(GTN* node) {
 		
 		for (int i = 0; i < way; i++)
 		{
-			Edge edge = node->GetEdge().GetNext()[i];
+			Edge edge = *node->GetEdge().GetNext()[i];
 			nodes.push_back( new GTN(edge, time*speed, nextTact, node) );
 		}
 		nodes.push_back(new GTN(node->GetEdge(), node->GetPlace(), nextTact, node));

@@ -8,14 +8,14 @@ class Edge {
 private:
 	int begin=NULL, end=NULL;
 	double distance=NULL;
-	vector<Edge> next;
+	vector<Edge*> next;
 public:
-	int GetBegin() { return this->begin; };
-	int GetEnd() { return this->end; };
-	double GetDistance() {return this->distance;};
-	vector<Edge> GetNext() { return this->next; };
-	void SetNext(vector<Edge> nxt) { 
-		for (Edge n : nxt) {
+	 int GetBegin() { return this->begin; };
+	 int GetEnd() { return this->end; };
+	 double GetDistance() {return this->distance;};
+	 vector<Edge*> GetNext() { return this->next; };
+	void SetNext(vector<Edge*> nxt) { 
+		for (Edge* n : nxt) {
 			this->next.push_back(n);
 		}
 		//this->next = nxt;
