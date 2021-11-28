@@ -6,6 +6,7 @@
 #include "DijkstraAlgorithm.h"
 #include "timeGraph.h"
 #include "nextNodeAlgorithm.h"
+#include "restrictedArea.h"
 #include <clocale>
 
 int main()
@@ -23,7 +24,7 @@ int main()
     graph.push_back(Edge(2, 3, 1));//4
     graph.push_back(Edge(2, 4, 5));//5
     graph.push_back(Edge(3, 1, 3));//6
-    graph.push_back(Edge(3, 6, 2));//7
+    graph.push_back(Edge(3, 6, 12));//7
     graph.push_back(Edge(3, 4, 3));//8
     graph.push_back(Edge(3, 2, 1));//9
     graph.push_back(Edge(4, 5, 5));//10
@@ -33,7 +34,7 @@ int main()
     graph.push_back(Edge(6, 3, 2));//14
     graph.push_back(Edge(6, 5, 3));//15
     graph.push_back(Edge(5, 6, 3));//16
-    graph.push_back(Edge(5, 4, 2));//17
+    graph.push_back(Edge(5, 4, 5));//17
     graph[0].SetNext(vector<Edge*> { &graph[4], &graph[5], &graph[3]});
     graph[1].SetNext(vector<Edge*> { &graph[7], &graph[8], &graph[9], &graph[6]});
     graph[2].SetNext(vector<Edge*> { &graph[14], &graph[15], &graph[13]});
@@ -53,8 +54,9 @@ int main()
     graph[16].SetNext(vector<Edge*> { &graph[13], &graph[14], &graph[15]});
     graph[17].SetNext(vector<Edge*> { &graph[11], &graph[12], &graph[10]});
     //
-
-
+    //RestrictedArea r=RestrictedArea(&graph[2], 4 , 6 );
+    RestrictedArea a = RestrictedArea(&graph[6], 1, 3); 
+    RestrictedArea c = RestrictedArea(&graph[15], 11, 12);
     /*
     graph.push_back( Edge(0, 2, 15));
     graph.push_back(Edge(0, 1, 5));
@@ -73,10 +75,10 @@ int main()
     GTN res = finder.SearchPath(graph[6], graph[17]);
 
     while (res.GetPrev() != nullptr) {
-        cout << "(" << res.GetEdge().GetBegin() << ", " << res.GetEdge().GetEnd() << ") P:" << res.GetPlace() << " T:" << res.GetTime() << endl;
+        cout << "(" << res.GetEdge().GetBegin() << ", " << res.GetEdge().GetEnd() << ") P:" << res.GetPlace() << " T:" << res.GetTime() << " S: " << res.GetStatusGTN() << endl;
         res = *res.GetPrev();
     }
-    cout << "(" << res.GetEdge().GetBegin() << ", " << res.GetEdge().GetEnd() << ") P:" << res.GetPlace() << " T:" << res.GetTime() << endl;
+    cout << "(" << res.GetEdge().GetBegin() << ", " << res.GetEdge().GetEnd() << ") P:" << res.GetPlace() << " T:" << res.GetTime() << " S: " << res.GetStatusGTN() << endl;
 
 
 

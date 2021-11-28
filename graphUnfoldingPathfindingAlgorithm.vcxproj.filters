@@ -38,5 +38,8 @@
     <ClInclude Include="timeGraph.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="restrictedArea.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

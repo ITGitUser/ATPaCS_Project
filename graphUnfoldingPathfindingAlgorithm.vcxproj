@@ -155,6 +155,7 @@
     <ClInclude Include="DijkstraAlgorithm.h" />
     <ClInclude Include="graph.h" />
     <ClInclude Include="nextNodeAlgorithm.h" />
+    <ClInclude Include="restrictedArea.h" />
     <ClInclude Include="timeGraph.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

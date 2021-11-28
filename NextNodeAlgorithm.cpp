@@ -2,12 +2,15 @@
 
 vector<GTN*> NextNodeAlgorithm::Next(GTN* node) {
 	int nextTact = node->GetTime()+1;
+	int tact = 1; //1 час
 	vector<GTN*> nodes;
+	//int s = speed * tact;
 	//проверка следующего положения, если в следующий такт мы остаемся в том же ребре, то..., иначе...
 	if (node->GetPlace()+speed < node->GetEdge().GetDistance())
 	{
-		nodes.push_back(new GTN(node->GetEdge(), node->GetPlace(), nextTact, node));
+		
 		nodes.push_back(new GTN(node->GetEdge(), node->GetPlace() + speed, nextTact, node));
+		//nodes.push_back(new GTN(node->GetEdge(), node->GetPlace(), nextTact, node));
 		return nodes;
 	}
 	else {
@@ -18,9 +21,9 @@ vector<GTN*> NextNodeAlgorithm::Next(GTN* node) {
 		for (int i = 0; i < way; i++)
 		{
 			Edge edge = *node->GetEdge().GetNext()[i];
-			nodes.push_back( new GTN(edge, time*speed, nextTact, node) );
+			nodes.push_back(new GTN(edge, time * speed, nextTact, node));
 		}
-		nodes.push_back(new GTN(node->GetEdge(), node->GetPlace(), nextTact, node));
+		//nodes.push_back(new GTN(node->GetEdge(), node->GetPlace(), nextTact, node));
 		return nodes;
 	}
 }
