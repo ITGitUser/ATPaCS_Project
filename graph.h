@@ -2,25 +2,22 @@
 #ifndef UPDATE_H
 #define UPDATE_H
 #include <vector>
+#include "timeGraph.h"
 using namespace std;
 
 //создаем тип вершина
 struct Apex {
 	int numApex = 0;
 	vector<int> edge;
-	bool visited = false;
-	vector<float> length;
-	float begin=0, end=0;
-	vector<int> maxspeed;
 };
 //ИНДЕКСАЦИЯ ВЕРШИН ГРАФА НАЧИНАЕТСЯ С 0!!!
 class Graph {
 private:
 	vector<Apex> adjList;
 	//Функция создания новой струтктуры типа вершина, возвращает созданную струкутуру
-	Apex* NewApex(vector<int>, vector<float>, vector<int> maxspeed);
+	Apex* NewApex(vector<int>);
 	//Функция добавления экзэмпляра типа Вершина в конец вектора смежности, возвращает вектор вершин, он же граф
-	vector<Apex> PushGraph(vector<int>, vector<float>, vector<int> maxspeed);
+	vector<Apex> PushGraph(vector<int>);
 	//Функция получения вектора вершин смежных с данной, возвращает вектор вершин смежных с данной
 	vector<Apex> GetAdjApex(int);
 	//Функция получения вершины, с данным номером, индексация с 0, возвращает структуру типа вершина
@@ -34,33 +31,54 @@ private:
 	//Функция удаляет все входящие связи вершины с данным номером
 	void DelAllInputAdjApex(int);
 	vector<Apex> GetGraph();
-	//Функция проверки посещения вершины
-	bool CheckVisited(int);
-	//Функция изменения "флага" посещения вершины
-	void ChangeVisited(int);
 	//Функция получения индекса вершины с номером numapex
 	int GetApIndex(int);
 	//Функция удаления ребра, первым аргументом приниает номер вершины, вторым- номер смежной вершины
 	void DelEdge(int, int);
 	//Функция проверки количества ребер
-	void CheckEdge();
+	int CheckEdge();
 	//Функция проверки количества вершин
 	int GraphCheckQuantityApex();
 public:
-	void Push(vector<int> edge, vector<float> length, vector<int> maxspeed) { PushGraph(edge, length, maxspeed); };
+	void Push(vector<int> edge) { PushGraph(edge); };
 	vector<Apex> GetAdj(int numApex) { return GetAdjApex(numApex); };
 	Apex GetApex(int numApex) { return GetAp(numApex); };
 	Apex GetApexByIndex(int indexApex) { return GraphGetApByIndex(indexApex); };
 	void Print() { PrintGraph(adjList); }
 	void DelApex(int numApex) { DeleteApex(numApex); }
 	vector<Apex> getGraph() { return GetGraph(); };
-	bool checkVisted(int apex) { return CheckVisited(apex); }
-	void changeVisited(int apex) { ChangeVisited(apex); }
 	int getApexIndex(int apex) { return GetApIndex(apex); }
 	void delEdge(int apex, int edge) { DelEdge(apex, edge); }
-	void checkEdge() { CheckEdge(); }
+	int checkEdge() { return CheckEdge(); }
 	int checkQuantityApex() { return GraphCheckQuantityApex(); }
-	
+	int getSizeGraph() { return this->adjList.size(); };
 	Graph() { this->adjList; };
 };
+
+class GraphEdge {
+private:
+	vector<Edge> gEdge;
+	void GraphEdgeInit(Graph);
+public:
+	void SetDistance(int indexEdge, double dist) { this->gEdge[indexEdge].setDistance(dist); };
+	Edge* GetEdge(int index) { return &gEdge[index]; };
+	void Print() {
+		for (int i = 0; i < gEdge.size(); i++)
+		{
+			cout << "(" << gEdge[i].GetBegin() << ", " << 
+				gEdge[i].GetEnd() << ") Dist:" << 
+				gEdge[i].GetDistance() <<
+				
+			endl;
+			for (int t = 0; t < gEdge[i].GetNext().size(); t++)
+			{
+				cout <<"( "<< gEdge[i].GetNext()[t]->GetBegin() << "," <<gEdge[i].GetNext()[t]->GetEnd()<<") " ;
+			}
+			cout <<  endl;
+			cout << "--------------" << endl;
+		}
+	};
+	GraphEdge(Graph g) { GraphEdgeInit(g); };
+};
+
 #endif

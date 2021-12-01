@@ -147,6 +147,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="DijkstraAlgorithm.cpp" />
     <ClCompile Include="Graph.cpp" />
     <ClCompile Include="graphUnfoldingPathfindingAlgorithm.cpp" />
     <ClCompile Include="NextNodeAlgorithm.cpp" />

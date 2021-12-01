@@ -2,32 +2,43 @@
 #include <cstddef>
 #include <vector>
 #include <string>
-
+#include <iostream>
+//#include "restrictedArea.h"
 using namespace std;
 
+class Limit {
+	int beginTact;
+	int endTact;
+public:
+	int GetTactBegin() { return beginTact; };
+	int GetTactEnd() { return endTact; };
+	Limit(int b, int end) { beginTact = b; endTact = end; };
+};
 //класс Ребро
 class Edge {
 private:
 	int begin=NULL, end=NULL;
 	double distance=NULL;
 	vector<Edge*> next;
-	int BeginTact=0, EndTact=0;
-	void SetL(int B, int E){ this->BeginTact = B; this->EndTact = E; }
+	vector<Limit> limit;
 public:
-	 int GetBegin() { return this->begin; };
-	 int GetEnd() { return this->end; };
-	 double GetDistance() {return this->distance;};
-	 vector<Edge*> GetNext() { return this->next; };
-	 void SetLimit(int Begin, int End) { SetL(Begin, End); };
-	 int GetBeginTactLimit() { return this->BeginTact; };
-	 int GetEndTactLimit() { return this->EndTact; };
+	vector<Limit> GetLimit() {return limit;};
+	Limit GetLimitbyIndex(int index) {return limit[index];};
+	int GetBegin() { return this->begin; };
+	int GetEnd() { return this->end; };
+	double GetDistance() {return this->distance;};
+	void setDistance(double dist) { this->distance = dist; };
+	vector<Edge*> GetNext() { return this->next; };
+	void AdLimit(int begin, int end) {
+		Limit l(begin, end);
+		limit.push_back(l);
+	};
 	void SetNext(vector<Edge*> nxt) { 
 		for (Edge* n : nxt) {
 			this->next.push_back(n);
 		}
-		//this->next = nxt;
 	};
-	Edge(int beg, int end, double dist ) {
+	Edge(int beg, int end, double dist=0 ) {
 		this->begin = beg;
 		this->end = end;
 		this->distance = dist;
@@ -54,11 +65,28 @@ public:
 	double GetPlace() { return this->place; };
 	int GetTime() { return this->time;};
 	GTN* GetPrev() { return this->prev; };
-	void changeGTN(double p) { this->place = p; };
-	GTN(Edge e, double p, int t, GTN *prev=nullptr) {
+	void PrintPath() {
+		GTN* res = this;
+		while (res->GetPrev() != nullptr) {
+			cout << "(" << res->GetEdge().GetBegin() << ", " << 
+				res->GetEdge().GetEnd() << ") P:" << 
+				res->GetPlace() << " T:" << 
+				res->GetTime() << " S: " << 
+				res->GetStatusGTN() << endl;
+			res = res->GetPrev();
+		}
+		cout << "(" << res->GetEdge().GetBegin() << ", " <<
+			res->GetEdge().GetEnd() << ") P:" <<
+			res->GetPlace() << " T:" <<
+			res->GetTime() << " S: " <<
+			res->GetStatusGTN() << endl;
+	};
+	GTN(Edge e, double p, int t=0, GTN *prev=nullptr) {
 		this->edge = e;
 		this->place = p;
 		this->time = t;
 		this->prev = prev;
 	};
 };
+
+

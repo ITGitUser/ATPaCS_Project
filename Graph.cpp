@@ -6,16 +6,14 @@
 #include <iomanip>
 using namespace std;
 //Функция создания новой струтктуры типа вершина, возвращает созданную струкутуру
-Apex* Graph::NewApex(vector<int> edge, vector<float> length, vector<int> maxspeed) {
+Apex* Graph::NewApex(vector<int> edge) {
 	Apex* currentApex = new Apex;
 	currentApex->edge = edge;
-	currentApex->length = length;
-	currentApex->maxspeed = maxspeed;
 	return currentApex;
 }
 //Функция добавления экзэмпляра типа Вершина в конец вектора смежности, возвращает вектор вершин, он же граф
-vector<Apex> Graph::PushGraph(vector<int> edge, vector<float> length, vector<int> maxspeed) {
-	Apex* currentApex = NewApex(edge, length, maxspeed);
+vector<Apex> Graph::PushGraph(vector<int> edge) {
+	Apex* currentApex = NewApex(edge);
 	currentApex->numApex = adjList.size();
 	adjList.push_back(*currentApex);
 	return adjList;
@@ -68,14 +66,6 @@ void Graph::PrintGraph(vector<Apex> adjList) {
 		copy(n.edge.begin(),   // итератор начала массива
 			n.edge.end(),     // итератор конца массива
 			ostream_iterator<int>(cout, " "));   //итератор потока вывода
-		//-----Выводим длины вершины в зависимости от смежности-----//
-		copy(n.length.begin(),
-			n.length.end(),
-			ostream_iterator<float>(cout, " "));
-		//-----Выводим максимальные скорости вершины в зависимости от смежности-----//
-		copy(n.maxspeed.begin(),
-			n.maxspeed.end(),
-			ostream_iterator<int>(cout, " "));
 		cout << endl;
 
 	}
@@ -99,32 +89,42 @@ void Graph::DelAllInputAdjApex(int numApex) {
 vector<Apex> Graph::GetGraph() {
 	return this->adjList;
 }
-//Функция проверки посещения вершины
-bool Graph::CheckVisited(int apex) {
-	return GetAp(apex).visited;
-}
-//Функция изменения "флага" посещения вершины
-void Graph::ChangeVisited(int apex) {
-	this->adjList[getApexIndex(apex)].visited = true;
-}
-
-
 //Функция удаления ребра, первым аргументом приниает номер вершины, вторым- номер смежной вершины
 void Graph::DelEdge(int apex, int indexedge) {
 	this->adjList[getApexIndex(apex)].edge.erase(this->adjList[getApexIndex(apex)].edge.begin() + indexedge);
 }
 //Функция проверки количества ребер
-void Graph::CheckEdge() {
+int Graph::CheckEdge() {
 	int numEdge = 0;
 	for (int i = 0; i < this->adjList.size(); i++) {
 		for (int j = 0; j < this->adjList[i].edge.size(); j++) {
 			numEdge++;
 		}
 	}
-	cout << "Количество ребер включая их направленность: " << numEdge << endl;
+	//cout << "Количество ребер включая их направленность: " << numEdge << endl;
+	return numEdge;
 }
-
-
 int Graph::GraphCheckQuantityApex() {
 	return adjList.size();
+}
+//инициализация гарфа ребер
+void GraphEdge::GraphEdgeInit(Graph g) {
+	for (int i = 0; i < g.getSizeGraph(); i++)
+	{
+		for (int k = 0; k < g.GetApexByIndex(i).edge.size(); k++)
+		{
+			this->gEdge.push_back(Edge(g.GetApexByIndex(i).numApex, g.GetApexByIndex(i).edge[k]));
+		}
+	}
+	for (int n = 0; n < this->gEdge.size(); n++)
+	{
+		vector<Edge*> vecEdge;
+		for (int m = 0; m < gEdge.size(); m++)
+		{
+			if (gEdge[n].GetEnd()== gEdge[m].GetBegin()) {
+				vecEdge.push_back(&gEdge[m]);
+			}
+		}
+		gEdge[n].SetNext(vecEdge);
+	}
 }

@@ -5,6 +5,6 @@ using namespace std;
 class RestrictedArea {
 public:
 	RestrictedArea(Edge* e, int tBeg, int tEnd) {
-		e->SetLimit(tBeg, tEnd);
+		e->AdLimit(tBeg, tEnd);
 	}
 };

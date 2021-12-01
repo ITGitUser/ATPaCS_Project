@@ -10,7 +10,6 @@ vector<GTN*> NextNodeAlgorithm::Next(GTN* node) {
 	{
 		
 		nodes.push_back(new GTN(node->GetEdge(), node->GetPlace() + speed, nextTact, node));
-		//nodes.push_back(new GTN(node->GetEdge(), node->GetPlace(), nextTact, node));
 		return nodes;
 	}
 	else {
@@ -23,7 +22,6 @@ vector<GTN*> NextNodeAlgorithm::Next(GTN* node) {
 			Edge edge = *node->GetEdge().GetNext()[i];
 			nodes.push_back(new GTN(edge, time * speed, nextTact, node));
 		}
-		//nodes.push_back(new GTN(node->GetEdge(), node->GetPlace(), nextTact, node));
 		return nodes;
 	}
 }
