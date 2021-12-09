@@ -3,7 +3,7 @@
 #include <vector>
 #include <string>
 #include <iostream>
-//#include "restrictedArea.h"
+
 using namespace std;
 
 class Limit {
@@ -22,8 +22,8 @@ private:
 	vector<Edge*> next;
 	vector<Limit> limit;
 public:
-	vector<Limit> GetLimit() {return limit;};
-	Limit GetLimitbyIndex(int index) {return limit[index];};
+	vector<Limit> GetLimit() {return this->limit;};
+	Limit GetLimitbyIndex(int index) {return this->limit[index];};
 	int GetBegin() { return this->begin; };
 	int GetEnd() { return this->end; };
 	double GetDistance() {return this->distance;};
@@ -47,6 +47,7 @@ public:
 		return (c1.begin == begin &&
 			c1.end == end && c1.distance == distance);
 	};
+
 	Edge() {};
 };
 
@@ -57,8 +58,15 @@ private:
 	double place;
 	int time;
 	GTN* prev;
-	string status = "go";
+	string status;
 public:
+	GTN* GetBegin() {
+		GTN* res = this;
+		while (res->GetPrev() != nullptr) {
+			res = res->GetPrev();
+		}
+		return res;
+	};
 	void SetStatusGTN(string s) { this->status = s; };
 	string GetStatusGTN() { return this->status; };
 	Edge GetEdge() { return this->edge; };
@@ -81,11 +89,12 @@ public:
 			res->GetTime() << " S: " <<
 			res->GetStatusGTN() << endl;
 	};
-	GTN(Edge e, double p, int t=0, GTN *prev=nullptr) {
+	GTN(Edge e, double p, int t=0, GTN *prev=nullptr, string stat="go") {
 		this->edge = e;
 		this->place = p;
 		this->time = t;
 		this->prev = prev;
+		this->status = stat;
 	};
 };
 

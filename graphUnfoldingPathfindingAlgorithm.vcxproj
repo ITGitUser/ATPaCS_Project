@@ -147,13 +147,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="DijkstraAlgorithm.cpp" />
+    <ClCompile Include="ModifiedLeeAlgorithm.cpp" />
     <ClCompile Include="Graph.cpp" />
     <ClCompile Include="graphUnfoldingPathfindingAlgorithm.cpp" />
     <ClCompile Include="NextNodeAlgorithm.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="DijkstraAlgorithm.h" />
+    <ClInclude Include="modifiedLeeAlgorithm.h" />
     <ClInclude Include="graph.h" />
     <ClInclude Include="nextNodeAlgorithm.h" />
     <ClInclude Include="restrictedArea.h" />

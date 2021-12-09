@@ -128,3 +128,21 @@ void GraphEdge::GraphEdgeInit(Graph g) {
 		gEdge[n].SetNext(vecEdge);
 	}
 }
+//печать графа ребер в консоли
+void GraphEdge::Print() {
+	for (int i = 0; i < gEdge.size(); i++)
+	{
+		cout << "(" << gEdge[i].GetBegin() << ", " <<
+			gEdge[i].GetEnd() << ") Dist:" <<
+			gEdge[i].GetDistance() <<
+
+			endl;
+		for (int t = 0; t < gEdge[i].GetNext().size(); t++)
+		{
+			cout << "( " << gEdge[i].GetNext()[t]->GetBegin() << "," << gEdge[i].GetNext()[t]->GetEnd() << ") ";
+		}
+		cout << endl;
+		cout << "--------------" << endl;
+	}
+
+}

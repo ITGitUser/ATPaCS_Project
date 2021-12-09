@@ -62,22 +62,7 @@ private:
 public:
 	void SetDistance(int indexEdge, double dist) { this->gEdge[indexEdge].setDistance(dist); };
 	Edge* GetEdge(int index) { return &gEdge[index]; };
-	void Print() {
-		for (int i = 0; i < gEdge.size(); i++)
-		{
-			cout << "(" << gEdge[i].GetBegin() << ", " << 
-				gEdge[i].GetEnd() << ") Dist:" << 
-				gEdge[i].GetDistance() <<
-				
-			endl;
-			for (int t = 0; t < gEdge[i].GetNext().size(); t++)
-			{
-				cout <<"( "<< gEdge[i].GetNext()[t]->GetBegin() << "," <<gEdge[i].GetNext()[t]->GetEnd()<<") " ;
-			}
-			cout <<  endl;
-			cout << "--------------" << endl;
-		}
-	};
+	void Print();
 	GraphEdge(Graph g) { GraphEdgeInit(g); };
 };
 

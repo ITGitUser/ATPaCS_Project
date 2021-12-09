@@ -24,15 +24,12 @@
     <ClCompile Include="NextNodeAlgorithm.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="DijkstraAlgorithm.cpp">
+    <ClCompile Include="ModifiedLeeAlgorithm.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="graph.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="DijkstraAlgorithm.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="nextNodeAlgorithm.h">
@@ -42,6 +39,9 @@
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="restrictedArea.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="modifiedLeeAlgorithm.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

@@ -3,11 +3,12 @@
 #include <iostream>
 #include <iterator>
 #include "graph.h"
-#include "DijkstraAlgorithm.h"
+#include "modifiedLeeAlgorithm.h"
 #include "timeGraph.h"
 #include "nextNodeAlgorithm.h"
 #include "restrictedArea.h"
 #include <clocale>
+#include <cstdlib>
 /*
 int GetGraphIndex(vector<Edge> evec, Edge e) {
     for (int i = 0; i < evec.size(); i++)
@@ -53,8 +54,6 @@ int main()
     //gEdge.Print();
     vector<Edge> graph;
     //-------Wiki--------//
-
-
     graph.push_back(Edge(1, 2, 2));//0
     graph.push_back(Edge(1, 3, 3));//1
     graph.push_back(Edge(1, 6, 4));//2
@@ -92,7 +91,7 @@ int main()
     graph[16].SetNext(vector<Edge*> { &graph[13], &graph[14], &graph[15]});
     graph[17].SetNext(vector<Edge*> { &graph[11], &graph[12], &graph[10]});
     
-    
+    vector<GTN*> routes;
 
 
     
@@ -116,12 +115,13 @@ int main()
   */
     NextNodeAlgorithm alg;
 
-    DijkstraAlgoritm finder = DijkstraAlgoritm(alg);
+   ModifiedLeeAlgoritm finder = ModifiedLeeAlgoritm(alg);
    // GTN res = finder.SearchPath(graph[6], graph[17]);
 
-    GTN res = finder.SearchPath(gEdge.GetEdge(6), gEdge.GetEdge(13), 4);
-    
+    GTN res = finder.SearchPath(gEdge.GetEdge(6), gEdge.GetEdge(13), 4, 16);
+    routes.push_back(&res);
     res.PrintPath();
+    
     /*
     while (res.GetPrev() != nullptr) {
         cout << "(" << res.GetEdge().GetBegin() << ", " << res.GetEdge().GetEnd() << ") P:" << res.GetPlace() << " T:" << res.GetTime() << " S: " << res.GetStatusGTN() << endl;
@@ -130,10 +130,15 @@ int main()
     }
     cout << "(" << res.GetEdge().GetBegin() << ", " << res.GetEdge().GetEnd() << ") P:" << res.GetPlace() << " T:" << res.GetTime() << " S: " << res.GetStatusGTN() << endl;
     */
-
+    /*
     //GTN res1 = finder.SearchPath(graph[6], graph[17]);
     GTN res1 = finder.SearchPath(gEdge.GetEdge(6), gEdge.GetEdge(13), 0 );
+    routes.push_back(&res1);
     res1.PrintPath();
+
+    GTN res2 = finder.SearchPath(gEdge.GetEdge(6), gEdge.GetEdge(13), 0);
+    routes.push_back(&res);
+    res2.PrintPath();
     /*
     while (res1.GetPrev() != nullptr) {
         cout << "(" << res1.GetEdge().GetBegin() << ", " << res1.GetEdge().GetEnd() << ") P:" << res1.GetPlace() << " T:" << res1.GetTime() << " S: " << res1.GetStatusGTN() << endl;
