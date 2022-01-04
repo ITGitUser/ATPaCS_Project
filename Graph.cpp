@@ -107,6 +107,8 @@ int Graph::CheckEdge() {
 int Graph::GraphCheckQuantityApex() {
 	return adjList.size();
 }
+
+
 //инициализация гарфа ребер
 void GraphEdge::GraphEdgeInit(Graph g) {
 	for (int i = 0; i < g.getSizeGraph(); i++)

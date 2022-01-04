@@ -7,31 +7,20 @@
 #include "timeGraph.h"
 #include "nextNodeAlgorithm.h"
 #include "restrictedArea.h"
+#include "routeManager.h"
 #include <clocale>
 #include <cstdlib>
-/*
-int GetGraphIndex(vector<Edge> evec, Edge e) {
-    for (int i = 0; i < evec.size(); i++)
-    {
-        if (evec[i].GetBegin() == e.GetBegin() &&
-            evec[i].GetEnd() == e.GetEnd())
-        {
-            return i;
-        }
-        
-    }
-};
-*/
+
 int main()
 {
     setlocale(LC_CTYPE, "Russian");
     Graph mainGraph;
-    mainGraph.Push({ 1, 2, 5 });
-    mainGraph.Push({ 0, 2, 3 });
-    mainGraph.Push({ 0, 1, 3, 5 });
-    mainGraph.Push({ 1, 2, 4 });
-    mainGraph.Push({ 3, 5 });
-    mainGraph.Push({ 0, 2, 4 });
+    mainGraph.Push({ 1, 2, 5 });//0,1,2
+    mainGraph.Push({ 0, 2, 3 });//3,4,5
+    mainGraph.Push({ 0, 1, 3, 5 });//6,7,8,9
+    mainGraph.Push({ 1, 2, 4 });//10,11,12
+    mainGraph.Push({ 3, 5 });//13,14
+    mainGraph.Push({ 0, 2, 4 });//15,16,17
     GraphEdge gEdge= GraphEdge(mainGraph);
     gEdge.SetDistance(0, 2);
     gEdge.SetDistance(1, 3);
@@ -52,111 +41,36 @@ int main()
     gEdge.SetDistance(16, 2);
     gEdge.SetDistance(17, 3);
     //gEdge.Print();
-    vector<Edge> graph;
-    //-------Wiki--------//
-    graph.push_back(Edge(1, 2, 2));//0
-    graph.push_back(Edge(1, 3, 3));//1
-    graph.push_back(Edge(1, 6, 4));//2
-    graph.push_back(Edge(2, 1, 2));//3
-    graph.push_back(Edge(2, 3, 1));//4
-    graph.push_back(Edge(2, 4, 5));//5
-    graph.push_back(Edge(3, 1, 3));//6
-    graph.push_back(Edge(3, 6, 12));//7
-    graph.push_back(Edge(3, 4, 3));//8
-    graph.push_back(Edge(3, 2, 1));//9
-    graph.push_back(Edge(4, 5, 5));//10
-    graph.push_back(Edge(4, 3, 3));//11
-    graph.push_back(Edge(4, 2, 5));//12
-    graph.push_back(Edge(6, 1, 4));//13
-    graph.push_back(Edge(6, 3, 2));//14
-    graph.push_back(Edge(6, 5, 3));//15
-    graph.push_back(Edge(5, 6, 3));//16
-    graph.push_back(Edge(5, 4, 5));//17
-    graph[0].SetNext(vector<Edge*> { &graph[4], &graph[5], &graph[3]});
-    graph[1].SetNext(vector<Edge*> { &graph[7], &graph[8], &graph[9], &graph[6]});
-    graph[2].SetNext(vector<Edge*> { &graph[14], &graph[15], &graph[13]});
-    graph[3].SetNext(vector<Edge*> { &graph[1], &graph[2], &graph[0]});
-    graph[4].SetNext(vector<Edge*> { &graph[7], &graph[8], &graph[9], &graph[6]});
-    graph[5].SetNext(vector<Edge*> { &graph[10], &graph[11], &graph[12]});
-    graph[6].SetNext(vector<Edge*> { &graph[0], &graph[2], &graph[1]});
-    graph[7].SetNext(vector<Edge*> { &graph[13], &graph[15], &graph[14]});
-    graph[8].SetNext(vector<Edge*> { &graph[10], &graph[12], &graph[11]});
-    graph[9].SetNext(vector<Edge*> { &graph[3], &graph[5], &graph[4]});
-    graph[10].SetNext(vector<Edge*> { &graph[16], & graph[17]});
-    graph[11].SetNext(vector<Edge*> { &graph[9], &graph[7], &graph[6], &graph[8]});
-    graph[12].SetNext(vector<Edge*> { &graph[3], &graph[4], &graph[5]});
-    graph[13].SetNext(vector<Edge*> { &graph[0], &graph[1], &graph[2]});
-    graph[14].SetNext(vector<Edge*> { &graph[6], &graph[8], &graph[9], &graph[7]});
-    graph[15].SetNext(vector<Edge*> { &graph[17], &graph[16]});
-    graph[16].SetNext(vector<Edge*> { &graph[13], &graph[14], &graph[15]});
-    graph[17].SetNext(vector<Edge*> { &graph[11], &graph[12], &graph[10]});
+
     
     vector<GTN*> routes;
 
 
     
-    RestrictedArea r= RestrictedArea(gEdge.GetEdge(2), 4 , 6 );
-   // gEdge.GetEdge(2)->AdLimit(4, 6);
-    //RestrictedArea(&graph[2], 6, 6);
-    //RestrictedArea(&graph[6], 1, 2); 
-   //RestrictedArea(&graph[6], 2, 3, 1, 5);
-    //RestrictedArea(&graph[15], 7, 11);
-    /*
-    graph.push_back( Edge(0, 2, 15));
-    graph.push_back(Edge(0, 1, 5));
-    graph.push_back(Edge(1, 2, 2));
-    graph.push_back(Edge(2, 1, 2));
-    graph.push_back(Edge(3, 0, 3));
-    graph[0].SetNext(vector<Edge*> { &graph[3]} );
-    graph[1].SetNext(vector<Edge*> { &graph[2]});
-    graph[2].SetNext(vector<Edge*> { &graph[3]});
-    graph[3].SetNext(vector<Edge*> { &graph[2]});
-    graph[4].SetNext(vector<Edge*> { &graph[0], &graph[1]});
-  */
+   RestrictedArea r= RestrictedArea(gEdge.GetEdge(2), 4 , 9 );
+    //RestrictedArea a = RestrictedArea(gEdge.GetEdge(12), 10, 12);
+   /*
     NextNodeAlgorithm alg;
 
    ModifiedLeeAlgoritm finder = ModifiedLeeAlgoritm(alg);
-   // GTN res = finder.SearchPath(graph[6], graph[17]);
 
-    GTN res = finder.SearchPath(gEdge.GetEdge(6), gEdge.GetEdge(13), 4, 16);
+    GTN res = finder.SearchWay(gEdge.GetEdge(6), gEdge.GetEdge(13), 4);
     routes.push_back(&res);
     res.PrintPath();
     
-    /*
-    while (res.GetPrev() != nullptr) {
-        cout << "(" << res.GetEdge().GetBegin() << ", " << res.GetEdge().GetEnd() << ") P:" << res.GetPlace() << " T:" << res.GetTime() << " S: " << res.GetStatusGTN() << endl;
-        new RestrictedArea(&graph[GetGraphIndex(graph,res.GetEdge())], res.GetTime(), res.GetTime());
-        res = *res.GetPrev();
-    }
-    cout << "(" << res.GetEdge().GetBegin() << ", " << res.GetEdge().GetEnd() << ") P:" << res.GetPlace() << " T:" << res.GetTime() << " S: " << res.GetStatusGTN() << endl;
-    */
-    /*
-    //GTN res1 = finder.SearchPath(graph[6], graph[17]);
-    GTN res1 = finder.SearchPath(gEdge.GetEdge(6), gEdge.GetEdge(13), 0 );
+    GTN res1 = finder.SearchWay(gEdge.GetEdge(6), gEdge.GetEdge(13), 0 );
     routes.push_back(&res1);
     res1.PrintPath();
 
-    GTN res2 = finder.SearchPath(gEdge.GetEdge(6), gEdge.GetEdge(13), 0);
-    routes.push_back(&res);
+    GTN res2 = finder.SearchWay(gEdge.GetEdge(6), gEdge.GetEdge(13), 0);
+    routes.push_back(&res2);
     res2.PrintPath();
-    /*
-    while (res1.GetPrev() != nullptr) {
-        cout << "(" << res1.GetEdge().GetBegin() << ", " << res1.GetEdge().GetEnd() << ") P:" << res1.GetPlace() << " T:" << res1.GetTime() << " S: " << res1.GetStatusGTN() << endl;
-        res1 = *res1.GetPrev();
-    }
-    cout << "(" << res1.GetEdge().GetBegin() << ", " << res1.GetEdge().GetEnd() << ") P:" << res1.GetPlace() << " T:" << res1.GetTime() << " S: " << res1.GetStatusGTN() << endl;
-    */
+   */
 
-   
+    RouteManager RManager=RouteManager(&gEdge);
+    RManager.AddRoute(10, gEdge.GetEdge(6), gEdge.GetEdge(13), 4);
+    RManager.DeleteRoute(10);
+    RManager.AddRoute(10, gEdge.GetEdge(6), gEdge.GetEdge(13), 4);
+    //RManager.AddRoute(10, gEdge.GetEdge(6), gEdge.GetEdge(13), 0);
+    //RManager.AddRoute(10, gEdge.GetEdge(6), gEdge.GetEdge(13), 0);
 }
-
-// Запуск программы: CTRL+F5 или меню "Отладка" > "Запуск без отладки"
-// Отладка программы: F5 или меню "Отладка" > "Запустить отладку"
-
-// Советы по началу работы 
-//   1. В окне обозревателя решений можно добавлять файлы и управлять ими.
-//   2. В окне Team Explorer можно подключиться к системе управления версиями.
-//   3. В окне "Выходные данные" можно просматривать выходные данные сборки и другие сообщения.
-//   4. В окне "Список ошибок" можно просматривать ошибки.
-//   5. Последовательно выберите пункты меню "Проект" > "Добавить новый элемент", чтобы создать файлы кода, или "Проект" > "Добавить существующий элемент", чтобы добавить в проект существующие файлы кода.
-//   6. Чтобы снова открыть этот проект позже, выберите пункты меню "Файл" > "Открыть" > "Проект" и выберите SLN-файл.

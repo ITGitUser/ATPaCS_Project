@@ -14,8 +14,17 @@ public:
 	int GetTactEnd() { return endTact; };
 	Limit(int b, int end) { beginTact = b; endTact = end; };
 };
+
+class iEdge {
+public:
+	virtual int GetBegin() = 0;
+	virtual int GetEnd() = 0;
+	virtual double GetDistance() = 0;
+	virtual vector<iEdge*> GetNext() = 0;
+	virtual void AdLimit(int, int) = 0;
+};
 //класс Ребро
-class Edge {
+class Edge{
 private:
 	int begin=NULL, end=NULL;
 	double distance=NULL;
@@ -24,15 +33,23 @@ private:
 public:
 	vector<Limit> GetLimit() {return this->limit;};
 	Limit GetLimitbyIndex(int index) {return this->limit[index];};
-	int GetBegin() { return this->begin; };
-	int GetEnd() { return this->end; };
-	double GetDistance() {return this->distance;};
+	 int GetBegin() { return this->begin; };
+	 int GetEnd() { return this->end; };
+	 double GetDistance() {return this->distance;};
 	void setDistance(double dist) { this->distance = dist; };
-	vector<Edge*> GetNext() { return this->next; };
-	void AdLimit(int begin, int end) {
+	 vector<Edge*> GetNext() { return next; };
+	 void AdLimit(int begin, int end) {
 		Limit l(begin, end);
 		limit.push_back(l);
 	};
+	 void DeleteLimit(int beg) {
+		 for (int i = 0; i < limit.size(); i++)
+		 {
+			 if (limit[i].GetTactBegin() == beg) {
+				 limit.erase(limit.begin() + i);
+			 }
+		 }
+	 };
 	void SetNext(vector<Edge*> nxt) { 
 		for (Edge* n : nxt) {
 			this->next.push_back(n);
@@ -96,6 +113,9 @@ public:
 		this->prev = prev;
 		this->status = stat;
 	};
+	~GTN() {
+		//delete prev;
+	}
 };
 
 

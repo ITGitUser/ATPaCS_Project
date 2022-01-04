@@ -12,7 +12,7 @@ private:
 	NextNodeAlgorithm currGTN;
 public:
 	//возвращает конечную GTN
-	GTN SearchPath(Edge*, Edge*, int, int tactEnd=-1);
+	GTN* SearchWay(Edge*, Edge*, int, int tactEnd=-1);//tactEnd=-1, это флаг поиска маршрута без привязки к конечному такту
 	ModifiedLeeAlgoritm(NextNodeAlgorithm node) { this->currGTN = node; };
 };
 

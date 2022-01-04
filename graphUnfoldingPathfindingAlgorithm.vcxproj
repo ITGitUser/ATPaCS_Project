@@ -151,12 +151,14 @@
     <ClCompile Include="Graph.cpp" />
     <ClCompile Include="graphUnfoldingPathfindingAlgorithm.cpp" />
     <ClCompile Include="NextNodeAlgorithm.cpp" />
+    <ClCompile Include="RouteManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="modifiedLeeAlgorithm.h" />
     <ClInclude Include="graph.h" />
     <ClInclude Include="nextNodeAlgorithm.h" />
     <ClInclude Include="restrictedArea.h" />
+    <ClInclude Include="routeManager.h" />
     <ClInclude Include="timeGraph.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
